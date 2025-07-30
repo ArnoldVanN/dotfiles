@@ -1,0 +1,35 @@
+-- You can add your own plugins here or in other files in this directory!
+--  I promise not to create any merge conflicts in this directory :)
+--
+-- See the kickstart.nvim README for more information
+-- return {
+--   require('lspconfig').yamlls.setup {
+--     settings = {
+--       yaml = {
+--         schemas = {
+--           -- Kubernetes core schema
+--           ['https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.27.0-standalone-strict/all.json'] = {
+--             '/*.k8s.yaml',
+--             '/*.k8s.yml',
+--             'k8s/**/*.yaml',
+--             'kubernetes/**/*.yaml',
+--             '**/deployment.yaml',
+--             '**/service.yaml',
+--           },
+--           ['~/.config/nvim/k8s-crds/gameserver.schema.json'] = {
+--             '**/gameserver.yaml',
+--           },
+--         },
+--         validate = true,
+--         completion = true,
+--         hover = true,
+--       },
+--       redhat = {
+--         telemetry = {
+--           enabled = false,
+--         },
+--       },
+--     },
+--   },
+-- }
+return {}
