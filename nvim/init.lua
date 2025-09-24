@@ -149,11 +149,11 @@ vim.o.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '│ ', trail = '·', nbsp = '␣' }
 
 vim.opt.expandtab = true
-vim.o.shiftwidth = 4 -- Sets the width for auto-indents
-vim.o.tabstop = 4    -- Sets the width for a tab character
+vim.o.shiftwidth = 2 -- Sets the width for auto-indents
+vim.o.tabstop = 2    -- Sets the width for a tab character
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -778,7 +778,6 @@ require('lazy').setup({
       })
     end,
   },
-
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -1121,8 +1120,6 @@ require('lazy').setup({
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
-        'typescript',
-        'javascript',
         'dockerfile',
         'bash',
         'c',
