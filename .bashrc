@@ -129,8 +129,8 @@ esac
 # pnpm end
 
 # go
+export PATH=$PATH:/usr/local/go/bin
 export PATH="/home/arno/go/bin:$PATH"
-export PATH="/usr/local/go/bin:$PATH"
 
 # kubebuilder autocompletion
 if [ -f /usr/local/share/bash-completion/bash_completion ]; then

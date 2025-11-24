@@ -804,6 +804,11 @@ require('lazy').setup({
           lsp_format = lsp_format_opt,
         }
       end,
+      formatters = {
+        prettierd = {
+          command = vim.fn.getcwd() .. "/node_modules/.bin/prettierd",
+        },
+      },
       formatters_by_ft = {
         lua = { 'lua_ls' },
         -- Conform can also run multiple formatters sequentially
