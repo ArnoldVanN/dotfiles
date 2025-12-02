@@ -128,16 +128,22 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# go
 export PATH=$PATH:/usr/local/go/bin
 export PATH="/home/arno/go/bin:$PATH"
+export KUBECONFIG=$HOME/.kube/config
 
-# kubebuilder autocompletion
+# load in secrets
+[ -f ~/.bash_tokens ] && source ~/.bash_tokens
+
+# autocompletion
 if [ -f /usr/local/share/bash-completion/bash_completion ]; then
 . /usr/local/share/bash-completion/bash_completion
 fi
 . <(kubebuilder completion bash)
 
+source <(hcloud completion bash)
+
+. <(flux completion bash)
 
 if [ -f "$HOME/.bash_envvars" ]; then
   source "$HOME/.bash_envvars"
@@ -146,6 +152,12 @@ fi
 # other aliases
 alias k='kubectl'
 alias fd='fdfind'
+alias pfcpstag='ssh -f -N -L 16443:$KUBE_API_STAGING:6443 $BASTION_IP'
+alias pfcpprod='ssh -f -N -L 16443:$KUBE_API_PROD:6443 $BASTION_IP'
+alias pftalstag='ssh -f -N -L 50000:$KUBE_API_STAGING:50000 $BASTION_IP'
+alias pftalprod='ssh -f -N -L 50000:$KUBE_API_PROD:50000 $BASTION_IP'
+alias pfcpkill='pkill -f "ssh -f -N -L 16443"'
+alias pftalkill='pkill -f "ssh -f -N -L 50000"'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
