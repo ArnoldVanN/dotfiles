@@ -145,6 +145,8 @@ source <(hcloud completion bash)
 
 . <(flux completion bash)
 
+source <(flux-operator completion bash)
+
 if [ -f "$HOME/.bash_envvars" ]; then
   source "$HOME/.bash_envvars"
 fi
@@ -166,3 +168,5 @@ export NVM_DIR="$HOME/.nvm"
 . "$HOME/.cargo/env"
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+. "$HOME/.local/share/../bin/env"
