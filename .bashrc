@@ -115,7 +115,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source ~/.fancy-bash-promt.sh
+source ~/.fancy-bash-prompt.sh
 
 # List 255 colors
 alias colors='for i in {0..255}; do printf "\e[48;5;${i}m %03d \e[0m" $i; ((i % 16 == 15)) && echo; done'
