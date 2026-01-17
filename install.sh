@@ -21,7 +21,7 @@ NVM_VERSION="v0.40.3"
 NODE_VERSION="v24"
 RIPGREP_VERSION="14.1.1"
 GO_VERSION="1.25.6"
-NERD_FONT="3270.zip"
+NERD_FONT="3270"
 
 # Colors for output
 readonly RED='\033[0;31m'
@@ -141,8 +141,22 @@ install_system_packages() {
 # -----------------------------
 setup_tmux_config() {
     log_info "Setting up tmux configuration..."
+    
     mkdir -p "$TMUX_CONFIG"
+    
+    local TPM_DIR="$TMUX_CONFIG/plugins/tpm"
+    
+    if [ -d "$TPM_DIR" ]; then
+        log_info "TPM already installed"
+    else
+        log_info "Installing TPM (Tmux Plugin Manager)..."
+        git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+    fi
+
     safe_link "$DOTFILES_DIR/tmux/tmux.conf" "$TMUX_CONFIG/tmux.conf"
+    safe_link "$DOTFILES_DIR/tmux/tmux-powerline" "$TMUX_CONFIG/tmux-powerline" "-sfn"
+    
+    log_info "Remember to press 'prefix + I' in tmux to install plugins"
 }
 
 # -----------------------------
@@ -152,7 +166,7 @@ install_nerd_fonts() {
     log_info "Installing Nerd Fonts..."
     mkdir -p "$FONT_DIR"
     
-    if fc-list | grep -qi "3270"; then
+    if fc-list | grep -i $NERD_FONT; then
         log_info "Nerd Font already installed"
         return
     fi
@@ -160,11 +174,11 @@ install_nerd_fonts() {
     local temp_dir=$(mktemp -d)
     cd "$temp_dir"
     
-    log_info "Downloading $NERD_FONT..."
-    wget -q "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/$NERD_FONT"
+    log_info "Downloading font $NERD_FONT..."
+    wget -q "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/$NERD_FONT.zip"
     
     log_info "Extracting fonts..."
-    unzip -o "$NERD_FONT" -d "$FONT_DIR"
+    unzip -o "$NERD_FONT.zip" -d "$FONT_DIR"
     
     cd - > /dev/null
     rm -rf "$temp_dir"
