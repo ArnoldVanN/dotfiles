@@ -153,13 +153,8 @@ fi
 
 # other aliases
 alias k='kubectl'
+alias tctl='talosctl'
 alias fd='fdfind'
-alias pfcpstag='ssh -f -N -L 16443:$KUBE_API_STAGING:6443 $BASTION_IP'
-alias pfcpprod='ssh -f -N -L 16443:$KUBE_API_PROD:6443 $BASTION_IP'
-alias pftalstag='ssh -f -N -L 50000:$KUBE_API_STAGING:50000 $BASTION_IP'
-alias pftalprod='ssh -f -N -L 50000:$KUBE_API_PROD:50000 $BASTION_IP'
-alias pfcpkill='pkill -f "ssh -f -N -L 16443"'
-alias pftalkill='pkill -f "ssh -f -N -L 50000"'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
