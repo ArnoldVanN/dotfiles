@@ -128,6 +128,7 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+export PATH="/usr/lib/llvm-20/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin
 export PATH="/home/arno/go/bin:$PATH"
 export KUBECONFIG=$HOME/.kube/config
