@@ -164,5 +164,6 @@ export NVM_DIR="$HOME/.nvm"
 . "$HOME/.cargo/env"
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+eval "$(direnv hook bash)"
 
 . "$HOME/.local/share/../bin/env"

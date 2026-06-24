@@ -114,13 +114,44 @@ install_neovim() {
 }
 
 # -----------------------------
+# Tree-sitter CLI
+# -----------------------------
+# Required by nvim-treesitter's `main` branch, which builds parsers with the
+# tree-sitter CLI (the old `master` branch only needed a C compiler).
+install_treesitter_cli() {
+    if command_exists tree-sitter; then
+        log_info "tree-sitter CLI already installed ($(tree-sitter --version))"
+        return
+    fi
+
+    log_info "Installing tree-sitter CLI..."
+
+    local arch ts_arch url
+    arch=$(uname -m)
+    case $arch in
+        x86_64) ts_arch="x64" ;;
+        aarch64|arm64) ts_arch="arm64" ;;
+        *) log_error "Unsupported architecture: $arch"; return 1 ;;
+    esac
+
+    url=$(curl -fsSL https://api.github.com/repos/tree-sitter/tree-sitter/releases/latest \
+        | grep -oE "https://[^\"]*tree-sitter-linux-${ts_arch}\.gz")
+    wget -q "$url" -O /tmp/tree-sitter.gz
+    gunzip -f /tmp/tree-sitter.gz
+    chmod +x /tmp/tree-sitter
+    sudo mv /tmp/tree-sitter /usr/local/bin/tree-sitter
+
+    tree-sitter --version
+}
+
+# -----------------------------
 # System Packages
 # -----------------------------
 install_system_packages() {
     log_info "Updating apt repositories..."
     sudo apt update
     
-    local packages=("ripgrep" "tmux" "fontconfig")
+    local packages=("ripgrep" "fd-find" "tmux" "fontconfig")
     
     for package in "${packages[@]}"; do
         if dpkg -l | grep -q "^ii  $package "; then
@@ -133,6 +164,7 @@ install_system_packages() {
     
     log_info "Verifying installations..."
     rg --version
+    fdfind --version
     tmux -V
 }
 
@@ -298,6 +330,7 @@ main() {
     setup_neovim_config
     install_homebrew
     install_neovim
+    install_treesitter_cli
     install_system_packages
     setup_tmux_config
     install_nerd_fonts
