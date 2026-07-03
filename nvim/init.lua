@@ -373,7 +373,9 @@ require('lazy').setup({
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    -- master branch is required for Neovim 0.12 + nvim-treesitter `main`;
+    -- the 0.1.x branch calls the removed nvim-treesitter `ft_to_lang` API.
+    branch = 'master',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
