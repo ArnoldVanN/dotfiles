@@ -77,7 +77,7 @@ if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
-    alias ls='lsd'
+    command -v lsd &>/dev/null && alias ls='lsd'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -115,13 +115,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source ~/.fancy-bash-prompt.sh
+[ -f ~/.fancy-bash-prompt.sh ] && source ~/.fancy-bash-prompt.sh
 
 # List 255 colors
 alias colors='for i in {0..255}; do printf "\e[48;5;${i}m %03d \e[0m" $i; ((i % 16 == 15)) && echo; done'
 
 # pnpm
-export PNPM_HOME="/home/arno/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -130,7 +130,7 @@ esac
 
 export PATH="/usr/lib/llvm-20/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin
-export PATH="/home/arno/go/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 export KUBECONFIG=$HOME/.kube/config
 
 # load in secrets
@@ -140,13 +140,10 @@ export KUBECONFIG=$HOME/.kube/config
 if [ -f /usr/local/share/bash-completion/bash_completion ]; then
 . /usr/local/share/bash-completion/bash_completion
 fi
-. <(kubebuilder completion bash)
-
-source <(hcloud completion bash)
-
-. <(flux completion bash)
-
-source <(flux-operator completion bash)
+for _tool in kubebuilder hcloud flux flux-operator; do
+  command -v "$_tool" &>/dev/null && source <("$_tool" completion bash)
+done
+unset _tool
 
 if [ -f "$HOME/.bash_envvars" ]; then
   source "$HOME/.bash_envvars"
@@ -161,9 +158,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-eval "$(direnv hook bash)"
+[ -x /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+command -v direnv &>/dev/null && eval "$(direnv hook bash)"
 
-. "$HOME/.local/share/../bin/env"
+if [ -f "$HOME/.local/bin/env" ]; then
+  . "$HOME/.local/bin/env"
+fi

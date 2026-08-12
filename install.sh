@@ -61,11 +61,23 @@ safe_link() {
             log_info "Skipping: $dest"
             return
         fi
-        rm -rf "$dest"
+        local backup="$dest.bak.$(date +%Y%m%d%H%M%S)"
+        mv "$dest" "$backup"
+        log_info "Backed up existing file to $backup"
     fi
     
     ln $flags "$src" "$dest"
     log_info "Linked: $src -> $dest"
+}
+
+# -----------------------------
+# Bash Configuration
+# -----------------------------
+setup_bash_config() {
+    log_info "Setting up bash configuration..."
+
+    safe_link "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
+    safe_link "$DOTFILES_DIR/.fancy-bash-prompt.sh" "$HOME/.fancy-bash-prompt.sh"
 }
 
 # -----------------------------
@@ -151,7 +163,7 @@ install_system_packages() {
     log_info "Updating apt repositories..."
     sudo apt update
     
-    local packages=("ripgrep" "fd-find" "tmux" "fontconfig")
+    local packages=("curl" "wget" "unzip" "ripgrep" "fd-find" "tmux" "fontconfig" "libatomic1")
     
     for package in "${packages[@]}"; do
         if dpkg -l | grep -q "^ii  $package "; then
@@ -252,7 +264,7 @@ install_node_package_managers() {
     
     if ! command_exists pnpm; then
         log_info "Installing pnpm..."
-        curl -fsSL https://get.pnpm.io/install.sh | sh -
+        curl -fsSL https://get.pnpm.io/install.sh | SHELL="$(command -v bash)" bash -
         export PNPM_HOME="$HOME/.local/share/pnpm"
         export PATH="$PNPM_HOME:$PATH"
     else
@@ -300,23 +312,9 @@ print_post_install_info() {
     echo ""
     log_info "Installation completed successfully! 🎉"
     echo ""
-    echo "Please add the following to your ~/.bashrc or ~/.zshrc:"
+    echo "Homebrew, Go, NVM and pnpm are wired up in the linked ~/.bashrc"
     echo ""
-    echo "# Homebrew"
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
-    echo ""
-    echo "# Go"
-    echo 'export PATH=$PATH:/usr/local/go/bin'
-    echo ""
-    echo "# NVM"
-    echo 'export NVM_DIR="$HOME/.nvm"'
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
-    echo ""
-    echo "# pnpm"
-    echo 'export PNPM_HOME="$HOME/.local/share/pnpm"'
-    echo 'export PATH="$PNPM_HOME:$PATH"'
-    echo ""
-    echo "Then run: source ~/.bashrc"
+    echo "Run: source ~/.bashrc"
     echo ""
 }
 
@@ -327,11 +325,12 @@ main() {
     log_info "Starting dotfiles installation..."
     log_info "Dotfiles directory: $DOTFILES_DIR"
     
+    install_system_packages
+    setup_bash_config
     setup_neovim_config
     install_homebrew
     install_neovim
     install_treesitter_cli
-    install_system_packages
     setup_tmux_config
     install_nerd_fonts
     install_nvm_node
