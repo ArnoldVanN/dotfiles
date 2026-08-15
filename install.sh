@@ -77,6 +77,7 @@ setup_bash_config() {
     log_info "Setting up bash configuration..."
 
     safe_link "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
+    safe_link "$DOTFILES_DIR/.bash_profile" "$HOME/.bash_profile"
     safe_link "$DOTFILES_DIR/.fancy-bash-prompt.sh" "$HOME/.fancy-bash-prompt.sh"
 }
 
