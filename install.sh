@@ -82,6 +82,31 @@ setup_bash_config() {
 }
 
 # -----------------------------
+# Git Configuration
+# -----------------------------
+setup_git_config() {
+    log_info "Setting up git configuration..."
+
+    safe_link "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
+
+    # identity stays untracked, pulled in by the [include] at the end of .gitconfig
+    local local_config="$HOME/.gitconfig.local"
+
+    if [ -f "$local_config" ]; then
+        log_info "Git identity already set in $local_config"
+        return
+    fi
+
+    cat > "$local_config" <<'EOF'
+[user]
+	email = CHANGE_ME
+	name = CHANGE_ME
+EOF
+    chmod 600 "$local_config"
+    log_warn "Created $local_config, fill in your name and email"
+}
+
+# -----------------------------
 # Neovim Configuration
 # -----------------------------
 setup_neovim_config() {
@@ -93,6 +118,7 @@ setup_neovim_config() {
     safe_link "$DOTFILES_DIR/nvim/init.lua" "$NVIM_CONFIG/init.lua"
     safe_link "$DOTFILES_DIR/nvim/kickstart" "$NVIM_CONFIG/lua/kickstart" "-sfn"
     safe_link "$DOTFILES_DIR/nvim/custom" "$NVIM_CONFIG/lua/custom" "-sfn"
+    safe_link "$DOTFILES_DIR/nvim/snippets" "$NVIM_CONFIG/snippets" "-sfn"
 }
 
 # -----------------------------
@@ -328,6 +354,7 @@ main() {
     
     install_system_packages
     setup_bash_config
+    setup_git_config
     setup_neovim_config
     install_homebrew
     install_neovim

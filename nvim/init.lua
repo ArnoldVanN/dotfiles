@@ -864,14 +864,19 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          'rafamadriz/friendly-snippets',
         },
         opts = {},
+        config = function(_, opts)
+          require('luasnip').setup(opts)
+          require('luasnip.loaders.from_vscode').lazy_load()
+          -- Personal snippets in ~/.config/nvim/snippets. The priority bump
+          -- wins the shared prefixes (rfc, us, ue) from friendly-snippets.
+          require('luasnip.loaders.from_vscode').lazy_load({
+            paths = { vim.fn.stdpath('config') .. '/snippets' },
+            override_priority = 2000,
+          })
+        end,
       },
       'folke/lazydev.nvim',
     },

@@ -1,0 +1,83 @@
+{
+  "React component": {
+    "prefix": "rfc",
+    "body": [
+      "export default function ${1:${TM_FILENAME_BASE}}() {",
+      "  return (",
+      "    <div>$0</div>",
+      "  )",
+      "}"
+    ],
+    "description": "Default-exported function component"
+  },
+  "React component with props": {
+    "prefix": "rfcp",
+    "body": [
+      "type ${1:${TM_FILENAME_BASE}}Props = {",
+      "  ${2:className?: string}",
+      "}",
+      "",
+      "export default function $1({ ${3:className} }: ${1}Props) {",
+      "  return (",
+      "    <div>$0</div>",
+      "  )",
+      "}"
+    ],
+    "description": "Function component with a props type"
+  },
+  "Named component": {
+    "prefix": "rnc",
+    "body": [
+      "export function ${1:Name}() {",
+      "  return (",
+      "    <div>$0</div>",
+      "  )",
+      "}"
+    ],
+    "description": "Named-export function component"
+  },
+  "use client": {
+    "prefix": "uc",
+    "body": ["\"use client\"", "$0"],
+    "description": "Client component directive"
+  },
+  "useState": {
+    "prefix": "us",
+    "body": ["const [${1:state}, set${1/(.*)/${1:/capitalize}/}] = useState${2:<${3:string}>}(${4:null})$0"],
+    "description": "useState hook"
+  },
+  "useEffect": {
+    "prefix": "ue",
+    "body": ["useEffect(() => {", "  $0", "}, [$1])"],
+    "description": "useEffect hook"
+  },
+  "useCallback": {
+    "prefix": "ucb",
+    "body": ["const ${1:handler} = useCallback((${2}) => {", "  $0", "}, [$3])"],
+    "description": "useCallback hook"
+  },
+  "useMemo": {
+    "prefix": "um",
+    "body": ["const ${1:value} = useMemo(() => ${2:compute()}, [$3])$0"],
+    "description": "useMemo hook"
+  },
+  "useRef": {
+    "prefix": "ur",
+    "body": ["const ${1:ref} = useRef<${2:HTMLDivElement}>(${3:null})$0"],
+    "description": "useRef hook"
+  },
+  "Map over list": {
+    "prefix": "map",
+    "body": [
+      "{${1:items}.map((${2:item}) => (",
+      "  <${3:div} key={$2.${4:id}}>$0</$3>",
+      "))}"
+    ],
+    "description": "Render a list with keys"
+  },
+  "Event handler": {
+    "prefix": "hnd",
+    "body": ["function handle${1:Click}(${2:event}: React.${3:MouseEvent}<${4:HTMLButtonElement}>) {", "  $0", "}"],
+    "description": "Typed event handler"
+  }
+}

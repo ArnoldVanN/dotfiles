@@ -1,0 +1,142 @@
+{
+  "Next page": {
+    "prefix": "npage",
+    "body": [
+      "import type { Metadata } from \"next\"",
+      "",
+      "export const metadata: Metadata = {",
+      "  title: \"${1:Title}\",",
+      "  description: \"${2:Description}\",",
+      "}",
+      "",
+      "export default function ${3:Page}() {",
+      "  return (",
+      "    <main>$0</main>",
+      "  )",
+      "}"
+    ],
+    "description": "App Router page with metadata"
+  },
+  "Next async page with params": {
+    "prefix": "npagep",
+    "body": [
+      "export default async function ${1:Page}({",
+      "  params,",
+      "}: {",
+      "  params: Promise<{ ${2:id}: string }>",
+      "}) {",
+      "  const { $2 } = await params",
+      "",
+      "  return (",
+      "    <main>$0</main>",
+      "  )",
+      "}"
+    ],
+    "description": "App Router page with awaited params"
+  },
+  "Next layout": {
+    "prefix": "nlayout",
+    "body": [
+      "export default function ${1:Layout}({",
+      "  children,",
+      "}: {",
+      "  children: React.ReactNode",
+      "}) {",
+      "  return (",
+      "    <>$0{children}</>",
+      "  )",
+      "}"
+    ],
+    "description": "App Router layout"
+  },
+  "Next metadata": {
+    "prefix": "nmeta",
+    "body": [
+      "import type { Metadata } from \"next\"",
+      "",
+      "export const metadata: Metadata = {",
+      "  title: \"${1:Title}\",",
+      "  description: \"${2:Description}\",",
+      "}$0"
+    ],
+    "description": "Static metadata export"
+  },
+  "Next generateMetadata": {
+    "prefix": "ngenmeta",
+    "body": [
+      "export async function generateMetadata({",
+      "  params,",
+      "}: {",
+      "  params: Promise<{ ${1:id}: string }>",
+      "}): Promise<Metadata> {",
+      "  const { $1 } = await params",
+      "",
+      "  return {",
+      "    title: $0,",
+      "  }",
+      "}"
+    ],
+    "description": "Dynamic metadata"
+  },
+  "Next route handler": {
+    "prefix": "nroute",
+    "body": [
+      "import { type NextRequest, NextResponse } from \"next/server\"",
+      "",
+      "export async function ${1|GET,POST,PATCH,DELETE,PUT|}(req: NextRequest) {",
+      "  $0",
+      "  return NextResponse.json({ ok: true })",
+      "}"
+    ],
+    "description": "App Router route handler"
+  },
+  "Next server action": {
+    "prefix": "naction",
+    "body": [
+      "\"use server\"",
+      "",
+      "export async function ${1:action}(${2:formData: FormData}) {",
+      "  $0",
+      "}"
+    ],
+    "description": "Server action"
+  },
+  "Next loading": {
+    "prefix": "nloading",
+    "body": ["export default function Loading() {", "  return (", "    <div>$0</div>", "  )", "}"],
+    "description": "loading.tsx"
+  },
+  "Next error boundary": {
+    "prefix": "nerror",
+    "body": [
+      "\"use client\"",
+      "",
+      "export default function Error({",
+      "  error,",
+      "  reset,",
+      "}: {",
+      "  error: Error & { digest?: string }",
+      "  reset: () => void",
+      "}) {",
+      "  return (",
+      "    <div>$0</div>",
+      "  )",
+      "}"
+    ],
+    "description": "error.tsx boundary"
+  },
+  "Next not-found": {
+    "prefix": "nnotfound",
+    "body": ["export default function NotFound() {", "  return (", "    <div>$0</div>", "  )", "}"],
+    "description": "not-found.tsx"
+  },
+  "Next dynamic import": {
+    "prefix": "ndyn",
+    "body": [
+      "const ${1:Component} = dynamic(() => import(\"${2:@/components/$1}\"), {",
+      "  ssr: ${3|false,true|},",
+      "})$0"
+    ],
+    "description": "next/dynamic import"
+  }
+}

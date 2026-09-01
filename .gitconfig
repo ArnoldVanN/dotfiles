@@ -1,0 +1,19 @@
+[credential "https://github.com"]
+	helper = 
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !gh auth git-credential
+[init]
+	defaultBranch = main
+[core]
+	editor = nvim
+[fetch]
+	prune = true
+[alias]
+	gone = "!git fetch -p && { git branch -vv | grep \": gone]\" | awk \"{print \\$1}\"; git branch --merged main | grep -vE \"^\\*|^\\s+(main|production)$\"; } | sort -u | xargs -r git branch -d"
+[push]
+	autoSetupRemote = true
+
+[include]
+	path = ~/.gitconfig.local

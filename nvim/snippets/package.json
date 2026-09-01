@@ -1,0 +1,15 @@
+{
+  "name": "arno-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": ["typescriptreact", "javascriptreact"],
+        "path": "./react.json"
+      },
+      {
+        "language": ["typescript", "typescriptreact"],
+        "path": "./next.json"
+      }
+    ]
+  }
+}
